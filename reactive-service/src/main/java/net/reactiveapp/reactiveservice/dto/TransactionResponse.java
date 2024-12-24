@@ -1,4 +1,5 @@
 package net.reactiveapp.reactiveservice.dto;
 
-public record TransactionResponse() {
-}
+import java.time.LocalDateTime;
+
+public record TransactionResponse(String identifier,LocalDateTime createdAt,Double amount,Long companyId) {}

@@ -8,5 +8,6 @@ import reactor.core.publisher.Mono;
 public interface TransactionService {
     Flux<TransactionResponse> getAllTransactions();
     Mono<TransactionResponse> getTransactionByIdentifier(String identifier);
-    Mono<TransactionRequest> createTransaction(TransactionRequest request);
+    Mono<TransactionRequest> createTransaction(Long companyId, TransactionRequest request);
+    Flux<TransactionResponse> companyTransactions(Long companyId);
 }
