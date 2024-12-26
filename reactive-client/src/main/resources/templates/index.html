@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css"/>
+</head>
+<body>
+<p></p>
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>Identifier</th><th>Date</th><th>Amount</th><th>Company ID</th>
+        </tr>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${transaction.identifier}"></td>
+            <td th:text="${#strings.replace(#strings.substring(transaction.createdAt, 0, 10) + ' ' + #strings.substring(transaction.createdAt, 11, 16), 'T', ' ')}"></td>
+            <td th:text="${transaction.amount + ' MAD'}"></td>
+            <td th:text="${transaction.companyId}"></td>
+            <td><a th:href="@{/{companyId}/companyTransactions(companyId=${transaction.companyId})}">Details</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

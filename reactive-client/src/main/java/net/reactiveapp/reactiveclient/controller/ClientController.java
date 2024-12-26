@@ -1,17 +1,14 @@
 package net.reactiveapp.reactiveclient.controller;
 
-import net.reactiveapp.reactiveclient.dto.ApiResponse;
 import net.reactiveapp.reactiveclient.service.ClientService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
+import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 
-import java.time.Duration;
 
-@RestController
-@RequestMapping("/api/clientTransactions")
+@Controller
 public class ClientController {
     private final ClientService service;
 
@@ -19,21 +16,17 @@ public class ClientController {
         this.service = service;
     }
 
-    @GetMapping(value = "/all",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    Flux<ApiResponse> findAllTransactions() {
-        return service.getAllTransaction().delayElements(Duration.ofSeconds(1L));
+    @GetMapping( "/")
+    public String landingPage(Model model) {
+        IReactiveDataDriverContextVariable reactive = new ReactiveDataDriverContextVariable(service.getAllTransaction(), 1);
+        model.addAttribute("transactions",reactive);
+        return "index";
     }
 
-    @GetMapping(value = "/{companyId}/companyTransactions",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    Flux<Double> findAllCompanyTransactions(@PathVariable Long companyId) {
-        return service.getCompanyTransaction(companyId).delayElements(Duration.ofSeconds(1L));
-    }
-
-    @GetMapping("/{identifier}/transactionDetails")
-    @ResponseStatus(HttpStatus.OK)
-    Mono<ApiResponse> findTransactionDetails(@PathVariable String identifier) {
-        return service.getTransactionByIdentifier(identifier);
+    @GetMapping("/{companyId}/companyTransactions")
+    public String companyTransactionsPage(@PathVariable Long companyId, Model model) {
+        IReactiveDataDriverContextVariable reactive = new ReactiveDataDriverContextVariable(service.getCompanyTransaction(companyId),1);
+        model.addAttribute("transactions",reactive);
+        return "details";
     }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/5.3.3/css/bootstrap.min.css"/>
+</head>
+<body>
+<p></p>
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>Amount</th>
+        </tr>
+        <tr th:each="amount : ${transactions}">
+            <td th:text="${amount + ' MAD'}"></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
